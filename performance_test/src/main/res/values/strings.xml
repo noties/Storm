@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ORM performance test</string>
+
+    <string name="millis_pattern">%1$d ms</string>
+    <string name="nanos_pattern">%1$d ns</string>
+
+    <string name="concat_with_space">%1$s %2$s</string>
+
+    <string name="adapter_header_pattern">@string/concat_with_space</string>
+
+    <string name="menu_option_run">Run tests</string>
+
+    <string name="configure_pages_pattern">%1$d/%2$d</string>
+
+    <string name="configure_title_op_types">OpTypes</string>
+    <string name="configure_title_orms">ORMs</string>
+    <string name="configure_title_rounds">Rounds</string>
+    <string name="configure_title_time">Time</string>
+
+    <string name="configure_menu_done">Done</string>
+
+    <string name="configure_error_orms">At least 1 ORM… :(</string>
+    <string name="configure_error_op_types">At least 1 OpType… :(</string>
+    <string name="configure_error_rounds">At least 1 round… :(</string>
+
+</resources>

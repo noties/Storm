@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="good_color">   #ff3F469D</color>
+    <color name="bad_color">    #ffE34545</color>
+    <color name="no_color">     #80999999</color>
+
+</resources>

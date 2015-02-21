@@ -1,0 +1,135 @@
+apply plugin: 'com.android.application'
+apply plugin: 'aar-link-sources'
+//apply plugin: 'com.neenbedankt.android-apt'
+//apply plugin: 'com.raizlabs.griddle'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "ru.noties.performance_test"
+        minSdkVersion 14
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+
+        final def db_version = 1
+        buildConfigField 'int', 'DB_VERSION', '' + db_version
+
+        final def aa_db     = 'aa.db'
+        final def sugar_db  = 'sugar.db'
+        final def rush_db   = 'rush.db'
+
+        manifestPlaceholders = [
+                db_version: db_version,
+                aa_db: aa_db,
+                sugar_db: sugar_db,
+                rush_db: rush_db
+        ]
+
+        buildConfigField 'int[]', 'ROUNDS', 'new int[] {10, 100, 1000, 5000, 10000, 20000, 25000, 50000, 100000, 250000, 500000, 1000000}'
+
+        buildConfigField 'int', 'ROUNDS_SELECTED_FROM', '10' // not equal to
+        buildConfigField 'int', 'ROUNDS_SELECTED_TO', '10000' // not equal to
+
+        final def orms = [
+                new ORM('raw',              'Sqlite native',    'raw.db',       db_version),
+                new ORM('storm',            'Storm',            'storm.db',     db_version),
+                new ORM('sprinkles',        'Sprinkles',        'sprinkles.db', db_version - 1), // zero based....
+//                new ORM('db_flow',          'DB Flow',          'db_flow.db',   db_version),
+                new ORM('active_android',   'ActiveAndroid',    aa_db,          db_version),
+                new ORM('sugar_orm',        'SugarORM',         sugar_db,       db_version),
+                new ORM('rush_orm',         'RushORM',          rush_db,        db_version),
+//                new ORM('ollie',            'Ollie',            'ollie.db',     db_version),
+//                new ORM('orm_lite',         'ORMLite',          'ormlite.db',   db_version)
+        ]
+
+        final StringBuilder builder = new StringBuilder(';\npublic static enum ORM { \n')
+        def isFirst = true
+        for (orm in orms) {
+            if (!isFirst) {
+                builder.append(',\n')
+            } else {
+                isFirst = false
+            }
+            final def tN = orm.typeName.toUpperCase()
+            builder.append("$tN(\"$orm.ormName\",\"$orm.dbName\",$orm.dbVersion)")
+        }
+        builder.append(';\nprivate final String ormName;\nprivate final String dbName;\nprivate final int dbVersion;\n')
+                .append('private ORM(String ormName,String dbName,int dbVersion) {\n')
+                .append('this.ormName=ormName;\nthis.dbName=dbName;\nthis.dbVersion=dbVersion;\n}\n')
+                .append('public String getOrmName(){return ormName;}\n')
+                .append('public String getDbName(){return dbName;}\n')
+                .append('public int getDbVersion(){return dbVersion;}\n')
+                .append('}')
+
+        buildConfigField 'byte', 'dummy', '(byte) 0' + builder.toString()
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+//apt {
+//    arguments {
+//        androidManifestFile variant.outputs[0].processResources.manifestFile
+//        resourcePackageName 'ru.noties.storm.sample'
+//    }
+//}
+
+public class ORM {
+    def typeName
+    def ormName
+    def dbName
+    def dbVersion
+
+    public ORM(typeName, ormName, dbName, dbVersion) {
+        this.typeName = typeName
+        this.ormName = ormName
+        this.dbName = dbName
+        this.dbVersion = dbVersion
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support:recyclerview-v7:21.0.3'
+    compile 'com.android.support:support-annotations:21.0.3'
+    compile 'de.greenrobot:eventbus:2.4.0'
+    compile 'com.android.support:support-v4:21.0.3'
+    compile project(':library')
+    compile 'ru.noties:debug:1.1.1@aar'
+
+    // sprinkles
+    compile 'se.emilsjolander:sprinkles:1.3.1'
+    aarLinkSources 'se.emilsjolander:sprinkles:1.3.1:sources@jar'
+
+    // DBFlow
+//    apt 'com.raizlabs.android:DBFlow-Compiler:1.5.0'
+//    mod "com.raizlabs.android:{DBFlow-Core, DBFlow}:1.5.0"
+
+    // active droid
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+
+    // sugar
+    compile 'com.github.satyan:sugar:1.3'
+    aarLinkSources 'com.github.satyan:sugar:1.3:sources@jar'
+
+    // ollie NPE during compilation...
+//    compile 'com.michaelpardo:ollie:0.3.1'
+//    provided 'com.michaelpardo:ollie-compiler:0.3.1'
+
+    // ormlite too much...
+//    compile 'com.j256.ormlite:ormlite-android:4.48'
+//    compile 'com.j256.ormlite:ormlite-core:4.48'
+}
