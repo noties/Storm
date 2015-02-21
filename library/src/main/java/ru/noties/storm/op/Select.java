@@ -48,7 +48,7 @@ public interface Select {
     Cursor rawQuery(Class<?> clazz, Selection selection);
 
     /**
-     * @see {@link android.database.sqlite.SQLiteDatabase#rawQuery(String, String[])}
+     * @see android.database.sqlite.SQLiteDatabase#rawQuery(String, String[])
      * @param sql SQLite statement to execute
      * @param args arguments for SQLite statement
      * @return {@link android.database.Cursor}
@@ -56,7 +56,7 @@ public interface Select {
     Cursor rawQuery(String sql, String[] args);
 
     /**
-     * @see {@link android.database.sqlite.SQLiteDatabase#query(String, String[], String, String[], String, String, String, String)}
+     * @see android.database.sqlite.SQLiteDatabase#query(String, String[], String, String[], String, String, String, String)
      * @return {@link android.database.Cursor}
      */
     Cursor rawQuery(

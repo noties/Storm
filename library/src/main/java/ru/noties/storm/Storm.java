@@ -110,7 +110,7 @@ public class Storm {
 
     /**
      * Registers {@link ru.noties.storm.InstanceCreator} for the specified {@link java.lang.Class}.
-     * It may be helpful & performance wise if, for example, an {@link java.lang.Object}
+     * It may be helpful and performance wise if, for example, an {@link java.lang.Object}
      * has no empty constructor or has very specific constructor,
      * or if construction of an Object via Reflection is not desired
      * (default {@link ru.noties.storm.InstanceCreator} for
@@ -137,7 +137,7 @@ public class Storm {
      * Registers Type serializer (aka not supported SQLite types) {@link ru.noties.storm.sd.AbsSerializer}
      * As a matter of fact {@link ru.noties.storm.sd.AbsSerializer} has only one method that
      * indicates what SQLite type({@link ru.noties.storm.FieldType}) this type will represent.
-     * Methods <code>serialize</code> & <code>deserialize</code>
+     * Methods <code>serialize</code> and <code>deserialize</code>
      * are not in the inheritance tree. This is done due to the autoboxing issue.
      *
      * If you wish to supply your own TypeSerializer you should definitely extend one of the following:

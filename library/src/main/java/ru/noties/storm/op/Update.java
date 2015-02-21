@@ -43,7 +43,7 @@ public interface Update extends Transactional {
 
     /**
      * Updates to specified Object in a db
-     * An attempt to get a Object's primary field & its' value is made,
+     * An attempt to get a Object's primary field and its\' value is made,
      * if it could not be done - throws exception, else method generates {@link ru.noties.storm.query.Selection}
      * and calls {@link #update(Object, ru.noties.storm.query.Selection, boolean, boolean)}
      *

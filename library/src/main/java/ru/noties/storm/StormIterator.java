@@ -26,14 +26,14 @@ import ru.noties.storm.pool.ObjectPool;
 public interface StormIterator<T> {
 
     /**
-     * @see {@link android.database.Cursor#getCount()}
+     * @see android.database.Cursor#getCount()
      * @return total number of rows
      */
     int getCount();
 
     /**
      * If <code>Cursor.moveToPosition(int)</code> returns false then method returns <code>null</code>
-     * @see {@link android.database.Cursor#moveToPosition(int)}
+     * @see android.database.Cursor#moveToPosition(int)
      * @return item on the current <code>position</code>
      */
     @Nullable T get(int position);
@@ -41,7 +41,7 @@ public interface StormIterator<T> {
     /**
      * It's crucial to call this method as instance of {@link ru.noties.storm.StormIterator}
      * holds a {@link android.database.Cursor}
-     * @see {@link android.database.Cursor#close()}
+     * @see android.database.Cursor#close()
      */
     void close();
 

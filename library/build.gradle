@@ -8,7 +8,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 21
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
     }
     buildTypes {
         release {
@@ -24,3 +24,5 @@ dependencies {
     provided 'com.android.support:support-v4:21.0.3'
 //    provided 'ru.noties:debug:1.1.1@aar'
 }
+
+apply from: 'https://raw.githubusercontent.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
