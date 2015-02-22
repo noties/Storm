@@ -6,15 +6,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import ru.noties.storm.DatabaseManager;
 import ru.noties.storm.Storm;
 import ru.noties.storm.StormIterator;
+import ru.noties.storm.adapter.BaseStormIteratorAdapter;
 import ru.noties.storm.exc.StormException;
-import ru.noties.storm.pool.ListViewObjectPool;
 
 import ru.noties.storm.sample.db.SampleManager;
 import ru.noties.storm.sample.model.SampleObject;
@@ -63,39 +62,10 @@ public class MainActivity extends ActionBarActivity {
         mManager.close();
     }
 
-    private static class MainAdapter<T> extends BaseAdapter {
-
-        private final LayoutInflater mInflater;
-        private final ListViewObjectPool<T> mPool;
-
-        private StormIterator<T> mIterator;
+    private static class MainAdapter<T> extends BaseStormIteratorAdapter<T> {
 
         public MainAdapter(Context context, T[] poolArray) {
-            this.mInflater = LayoutInflater.from(context);
-            this.mPool = new ListViewObjectPool<>(poolArray);
-            registerDataSetObserver(mPool);
-        }
-
-        public void setIterator(StormIterator<T> iterator, boolean notify) {
-            mIterator = iterator;
-            mIterator.setObjectPool(mPool);
-            if (notify) {
-                notifyDataSetChanged();
-            }
-        }
-
-        public StormIterator<T> getIterator() {
-            return mIterator;
-        }
-
-        @Override
-        public int getCount() {
-            return mIterator != null ? mIterator.getCount() : 0;
-        }
-
-        @Override
-        public T getItem(int position) {
-            return mIterator.get(position);
+            super(context, poolArray);
         }
 
         @Override
@@ -104,27 +74,14 @@ public class MainActivity extends ActionBarActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            final View view;
-            if (convertView == null) {
-                view = newView(position, parent);
-            } else {
-                view = convertView;
-            }
-
-            bindView(position, view);
-
-            return view;
-        }
-
-        private View newView(int position, ViewGroup group) {
-            final View view = mInflater.inflate(android.R.layout.simple_list_item_1, group, false);
+        protected View newView(LayoutInflater inflater, int position, ViewGroup group) {
+            final View view = inflater.inflate(android.R.layout.simple_list_item_1, group, false);
             view.setTag(new Holder(view));
             return view;
         }
 
-        private void bindView(int position, View view) {
+        @Override
+        protected void bindView(int position, View view) {
             final Holder holder = (Holder) view.getTag();
             holder.textView.setText(getItem(position).toString());
         }

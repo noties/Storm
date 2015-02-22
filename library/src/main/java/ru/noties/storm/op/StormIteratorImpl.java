@@ -65,6 +65,9 @@ class StormIteratorImpl<T> implements StormIterator<T> {
 
     @Override
     public void close() {
+        if (isClosed) {
+            return;
+        }
         isClosed = true;
         cursor.close();
     }
