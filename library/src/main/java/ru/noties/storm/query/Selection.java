@@ -32,8 +32,8 @@ public class Selection {
     public static final String NEQ  = " != ";
     public static final String B    = " > ";
     public static final String L    = " < ";
-    public static final String BE   = " <= ";
-    public static final String LE   = " >= ";
+    public static final String BE   = " >= ";
+    public static final String LE   = " <= ";
     public static final String IN   = " IN ";
     public static final String BTW  = " BETWEEN ";
 
