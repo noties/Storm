@@ -38,9 +38,14 @@ public class ReflectionInstanceCreator<T> implements InstanceCreator<T> {
 
         final Constructor<T> constructor = getConstructor(clazz);
 
+        //noinspection TryWithIdenticalCatches
         try {
             return constructor.newInstance();
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
 

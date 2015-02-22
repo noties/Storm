@@ -16,6 +16,7 @@
 
 package ru.noties.storm.util;
 
+import android.annotation.TargetApi;
 import android.os.Build;
 import android.util.ArrayMap;
 
@@ -25,14 +26,24 @@ import java.util.Map;
 /**
  * Created by Dimitry Ivanov (mail@dimitryivanov.ru) on 25.01.2015.
  */
+
 public class MapUtils {
 
     private MapUtils() {}
 
     public static  <K, V> Map<K, V> create() {
         if (Build.VERSION.SDK_INT >= 19) {
-            return new ArrayMap<>();
+            return create19();
         }
+        return createOther();
+    }
+
+    @TargetApi(19)
+    private static <K, V> Map<K, V> create19() {
+        return new ArrayMap<>();
+    }
+
+    private static <K, V> Map<K, V> createOther() {
         return new HashMap<>();
     }
 }
