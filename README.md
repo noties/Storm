@@ -17,7 +17,7 @@ Although there are letters `[ORM]` in title of this library it's not really an [
 
 ### Getting started
 ```java
-compile 'ru.noties:storm:1.0.2' // check for latest version in this repo's releases tab
+compile 'ru.noties:storm:1.0.3' // check for latest version in this repo's releases tab
 ```
 
 
