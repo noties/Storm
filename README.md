@@ -1,6 +1,8 @@
 # Storm
 Android SQLite manager
 
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Storm-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1584)
+
 ### Introduction
 Although there are letters `[ORM]` in title of this library it's not really an [ORM](https://en.wikipedia.org/wiki/Object-relational_mapping). Mostly because there are no object relations out of box (but still it could be done, more on this later). Think of it as an echanted helper for working with SQLite database on Android. At almost no price you get:
 
