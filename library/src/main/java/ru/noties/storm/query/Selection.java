@@ -59,15 +59,35 @@ public class Selection {
     }
 
     public static Selection in(String key, Object... values) {
-        return new Selection(
-                key,
-                IN,
-                String.valueOf(SO) + TextUtils.join(String.valueOf(COMMA) + SPACE, values) + SC
-        );
+        final StringBuilder builder = new StringBuilder();
+        final List<String> args = new ArrayList<>();
+        builder.append(key)
+                .append(IN)
+                .append(SO);
+        for (int i = 0, size = values.length; i < size; i++) {
+            builder.append(HOLDER);
+            args.add(i, String.valueOf(values[i]));
+            if (i != size -1) {
+                builder.append(COMMA);
+            }
+        }
+        builder.append(SC);
+        return new Selection(builder, args);
     }
 
     public static Selection btw(String key, Object first, Object second) {
-        return new Selection(key, BTW, String.valueOf(SO) + first + SPACE + AND + second + SC);
+        final StringBuilder builder = new StringBuilder();
+        final List<String> args = new ArrayList<>();
+        builder.append(key)
+                .append(BTW)
+                .append(SO)
+                .append(HOLDER)
+                .append(COMMA)
+                .append(HOLDER)
+                .append(SC);
+        args.add(0, String.valueOf(first));
+        args.add(1, String.valueOf(second));
+        return new Selection(builder, args);
     }
 
     public static Selection b(String key, Object value) {
@@ -90,8 +110,12 @@ public class Selection {
     private final List<String> args;
 
     protected Selection() {
-        builder = new StringBuilder();
-        args    = new ArrayList<>();
+        this(new StringBuilder(), new ArrayList<String>());
+    }
+
+    protected Selection(StringBuilder builder, List<String> args) {
+        this.builder = builder;
+        this.args = args;
     }
 
     protected Selection(String key, String operand, String value) {
@@ -108,12 +132,10 @@ public class Selection {
 
     protected void add(Selection selection, @Nullable String what) {
         if (what != null) {
-            builder.append(what)
-                .append(SPACE);
+            builder.append(what);
         }
 
-        builder.append(selection.builder)
-            .append(SPACE);
+        builder.append(selection.builder);
         args.addAll(selection.args);
     }
 
@@ -128,11 +150,9 @@ public class Selection {
     }
 
     public Selection grp(Selection selection) {
-        builder.append(SPACE)
-                .append(SO);
+        builder.append(SO);
         add(selection, null);
-        builder.append(SC)
-                .append(SPACE);
+        builder.append(SC);
         return this;
     }
 

@@ -3,6 +3,25 @@ apply plugin: 'aar-link-sources'
 //apply plugin: 'com.neenbedankt.android-apt'
 //apply plugin: 'com.raizlabs.griddle'
 
+buildscript {
+
+    repositories {
+        jcenter()
+        maven { url 'https://raw.github.com/xujiaao/mvn-repository/master/releases' }
+//        maven { url "https://raw.github.com/Raizlabs/maven-releases/master/releases" }
+    }
+
+    dependencies {
+        classpath 'com.github.xujiaao:aarLinkSources:1.0.0'
+//        classpath 'com.raizlabs:Griddle:1.0.1'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+    }
+}
+
+repositories {
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"

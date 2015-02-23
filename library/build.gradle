@@ -10,6 +10,7 @@ android {
         versionCode 3
         versionName "1.0.2"
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -20,8 +21,8 @@ android {
 
 dependencies {
     compile 'com.android.support:support-annotations:21.0.3'
-    provided 'com.android.support:recyclerview-v7:21.0.3'
-    provided 'com.android.support:support-v4:21.0.3'
+    compile 'com.android.support:recyclerview-v7:21.0.3'
+    compile 'com.android.support:support-v4:21.0.3'
 //    provided 'ru.noties:debug:1.1.1@aar'
 }
 

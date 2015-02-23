@@ -52,4 +52,8 @@ public class InstanceCreatorsMap {
         }
         return ic;
     }
+
+    Map<Class<?>, InstanceCreator<?>> getCreators() {
+        return mCreators;
+    }
 }

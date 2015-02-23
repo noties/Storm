@@ -231,6 +231,10 @@ public class Storm {
         return Storm.getInstance().mSerializers;
     }
 
+    static Map<Class<?>, InstanceCreator<?>> getInstanceCreators() {
+        return Storm.getInstance().mInstanceCreators.getCreators();
+    }
+
     public static FieldValueGetterFactory getFieldValueGetterFactory() {
         return Storm.getInstance().mFieldValueGetterFactory;
     }

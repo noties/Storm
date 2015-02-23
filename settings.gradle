@@ -1,1 +1,1 @@
-include ':performance_test', ':library', ':sample'
+include ':performance_test', ':library', ':sample', ':library_test'
