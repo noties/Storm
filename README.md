@@ -1,7 +1,7 @@
 # Storm
 Android SQLite manager
 
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Storm-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1584)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Storm-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1584) [![Maven Central](https://img.shields.io/maven-central/v/ru.noties/storm.svg)](http://search.maven.org/#search|ga|1|g%3A%22ru.noties%22%20AND%20a%3A%22storm%22)
 
 ### Introduction
 Although there are letters `[ORM]` in title of this library it's not really an [ORM](https://en.wikipedia.org/wiki/Object-relational_mapping). Mostly because there are no object relations out of box (but still it could be done, more on this later). Think of it as an echanted helper for working with SQLite database on Android. At almost no price you get:
@@ -15,6 +15,11 @@ Although there are letters `[ORM]` in title of this library it's not really an [
 * Any Object could be a model, no need to extend or implement anything
 * Easy serialization/deserialization of not supported by SQLite types
 * Android-orientired library
+
+#### Performance
+This repo contains the `performance_test` project (it has nothing to do with tests). It's more of a benchmark. With it you could measure the performance from currently popular Android ORMs (including *raw* SQLite) on your device. Check the project folder for the apk with already compiled project. On my Nexus 5 I get the following results:
+
+![Insert 10000](https://github.com/noties/Storm/blob/master/performance_test/insert_10000.png) ![Query 10000](https://github.com/noties/Storm/blob/master/performance_test/query_all_10000.png)
 
 
 ### Getting started
