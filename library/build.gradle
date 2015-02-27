@@ -27,3 +27,13 @@ dependencies {
 }
 
 apply from: 'https://raw.githubusercontent.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
+
+task updateMavenVersion << {
+    def dc = project.android.defaultConfig
+    project.setProperty('VERSION_NAME', dc.versionName)
+    project.setProperty('VERSION_CODE', dc.versionCode)
+}
+
+gradle.projectsEvaluated {
+    uploadArchives.dependsOn(updateMavenVersion)
+}
