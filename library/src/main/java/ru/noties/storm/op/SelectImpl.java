@@ -30,6 +30,7 @@ import ru.noties.storm.DatabaseManager;
 import ru.noties.storm.DynamicCursorParser;
 import ru.noties.storm.Query;
 import ru.noties.storm.StormIterator;
+import ru.noties.storm.StormIteratorImpl;
 import ru.noties.storm.TableCursorParser;
 import ru.noties.storm.query.Selection;
 

@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-package ru.noties.storm.op;
+package ru.noties.storm;
 
 import android.database.Cursor;
 import android.support.annotation.Nullable;
 
-import ru.noties.storm.CursorParser;
-import ru.noties.storm.StormIterator;
 import ru.noties.storm.pool.ObjectPool;
 
 /**
  * Created by Dimitry Ivanov (mail@dimitryivanov.ru) on 21.02.2015.
  */
-class StormIteratorImpl<T> implements StormIterator<T> {
+public class StormIteratorImpl<T> implements StormIterator<T> {
 
     private final Cursor cursor;
     private final CursorParser<T> cursorParser;

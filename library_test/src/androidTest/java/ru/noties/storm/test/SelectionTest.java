@@ -77,7 +77,7 @@ public class SelectionTest extends TestCase {
 
     public void testBetween() {
         final Selection selection = Selection.btw("key", "value1", "value2");
-        assertEquals("key BETWEEN (?,?)", selection.getSelection());
+        assertEquals("key BETWEEN ? AND ?", selection.getSelection());
         assertTrue(Arrays.equals(new String[]{"value1", "value2"}, selection.getSelectionArgs()));
     }
 

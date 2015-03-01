@@ -80,11 +80,9 @@ public class Selection {
         final List<String> args = new ArrayList<>();
         builder.append(key)
                 .append(BTW)
-                .append(SO)
                 .append(HOLDER)
-                .append(COMMA)
-                .append(HOLDER)
-                .append(SC);
+                .append(AND)
+                .append(HOLDER);
         args.add(0, String.valueOf(first));
         args.add(1, String.valueOf(second));
         return new Selection(builder, args);
