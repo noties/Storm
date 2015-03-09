@@ -16,11 +16,18 @@
 
 package ru.noties.storm.anno;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
  * @see <a href="https://www.sqlite.org/lang_createtable.html#notnullconst">https://www.sqlite.org/lang_createtable.html#notnullconst</a>
  *
  * Created by Dimitry Ivanov (mail@dimitryivanov.ru) on 25.01.2015.
  */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
 public @interface DBNonNull {
 
 }

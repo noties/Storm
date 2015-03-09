@@ -12,8 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
-//import com.raizlabs.android.dbflow.config.FlowManager;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -22,6 +20,7 @@ import java.util.concurrent.Executors;
 import de.greenrobot.event.EventBus;
 import ru.noties.debug.Debug;
 import ru.noties.performance_test.AbsTest;
+import ru.noties.performance_test.AbsTestInvoker;
 import ru.noties.performance_test.BuildConfig;
 import ru.noties.performance_test.ColorEvaluator;
 import ru.noties.performance_test.Configuration;
@@ -30,15 +29,6 @@ import ru.noties.performance_test.R;
 import ru.noties.performance_test.TestCompleteEvent;
 import ru.noties.performance_test.TestEvent;
 import ru.noties.performance_test.Time;
-import ru.noties.performance_test.aa.AATest;
-//import ru.noties.performance_test.dbflow.DBFlowDB;
-//import ru.noties.performance_test.dbflow.DBFlowTest;
-//import ru.noties.performance_test.ollie.OllieTest;
-import ru.noties.performance_test.raw.RawTest;
-import ru.noties.performance_test.rush.RushTest;
-import ru.noties.performance_test.sprkls.SprinklesTest;
-import ru.noties.performance_test.storm.StormTest;
-import ru.noties.performance_test.sugar.SugarTest;
 import ru.noties.performance_test.ui.configure.ConfigureFragment;
 
 public class MainActivity extends ActionBarActivity
@@ -208,32 +198,11 @@ public class MainActivity extends ActionBarActivity
 
             final boolean isLast = orm == last;
 
-            switch (orm) {
-
-                case RAW:
-                    testRaw(configuration, isLast);
-                    break;
-
-                case STORM:
-                    testStorm(configuration, isLast);
-                    break;
-
-                case SPRINKLES:
-                    testSprinkles(configuration, isLast);
-                    break;
-
-                case ACTIVE_ANDROID:
-                    testActiveAndroid(configuration, isLast);
-                    break;
-
-                case SUGAR_ORM:
-                    testSugarORM(configuration, isLast);
-                    break;
-
-                case RUSH_ORM:
-                    testRushORM(configuration, isLast);
-                    break;
-            }
+            test(
+                    configuration,
+                    isLast,
+                    orm.getClassName()
+            );
         }
     }
 
@@ -248,91 +217,30 @@ public class MainActivity extends ActionBarActivity
         super.onDestroy();
     }
 
-    private void testRaw(Configuration configuration, boolean checkLast) {
-        test(configuration, checkLast, new TestProvider() {
-            @Override
-            public AbsTest create(Context context, OpType[] opTypes, int rounds, Time time, boolean isLast) {
-                return new RawTest(context, opTypes, rounds, time, isLast);
-            }
-        });
-    }
+    private void test(Configuration configuration, boolean checkLast, String className) {
+        AbsTestInvoker invoker = null;
+        try {
+            invoker = new AbsTestInvoker(className);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-    private void testStorm(Configuration configuration, boolean checkLast) {
-        test(configuration, checkLast, new TestProvider() {
-            @Override
-            public AbsTest create(Context context, OpType[] opTypes, int rounds, Time time, boolean isLast) {
-                return new StormTest(context, opTypes, rounds, time, isLast);
-            }
-        });
-    }
+        if (invoker == null) {
+            return;
+        }
 
-    private void testSprinkles(Configuration configuration, boolean checkLast) {
-        test(configuration, checkLast, new TestProvider() {
-            @Override
-            public AbsTest create(Context context, OpType[] opTypes, int rounds, Time time, boolean isLast) {
-                return new SprinklesTest(context, opTypes, rounds, time, isLast);
-            }
-        });
-    }
-
-    // does not work
-//    private void testDBFlow() {
-//        FlowManager.init(this.getApplicationContext());
-//        test(new TestProvider() {
-//            @Override
-//            public AbsTest create(Context context, int rounds) {
-//                return new DBFlowTest(context, rounds);
-//            }
-//        });
-//        FlowManager.destroy();
-//    }
-
-    private void testActiveAndroid(Configuration configuration, boolean checkLast) {
-        test(configuration, checkLast, new TestProvider() {
-            @Override
-            public AbsTest create(Context context, OpType[] opTypes, int rounds, Time time, boolean isLast) {
-                return new AATest(context, opTypes, rounds, time, isLast);
-            }
-        });
-    }
-
-    private void testSugarORM(Configuration configuration, boolean checkLast) {
-        test(configuration, checkLast, new TestProvider() {
-            @Override
-            public AbsTest create(Context context, OpType[] opTypes, int rounds, Time time, boolean isLast) {
-                return new SugarTest(context, opTypes, rounds, time, isLast);
-            }
-        });
-    }
-
-    private void testRushORM(final Configuration configuration, boolean checkLast) {
-        test(configuration, checkLast, new TestProvider() {
-            @Override
-            public AbsTest create(Context context, OpType[] opTypes, int rounds, Time time, boolean isLast) {
-                return new RushTest(context, opTypes, rounds, time, isLast);
-            }
-        });
-    }
-
-    // doesn't work either
-//    private void testOllie() {
-//        test(new TestProvider() {
-//            @Override
-//            public AbsTest create(Context context, int rounds) {
-//                return new OllieTest(context, rounds);
-//            }
-//        });
-//    }
-
-//    private void testORMLite() {
-//        test(null);
-//    }
-
-    private void test(Configuration configuration, boolean checkLast, TestProvider factory) {
         final int[] configurationRounds = configuration.getRounds();
+        AbsTest<?> absTest;
         for (int round: configuration.getRounds()) {
             final boolean isLast = checkLast && configurationRounds[configurationRounds.length - 1] == round;
-            mExecutor.execute(factory.create(this, configuration.getOpTypes(), round, configuration.getTime(), isLast));
+            try {
+                absTest = invoker.invoke(this, configuration.getOpTypes(), round, configuration.getTime(), isLast);
+            } catch (Exception e) {
+                e.printStackTrace();
+                continue;
+            }
+
+            mExecutor.execute(absTest);
         }
     }
 

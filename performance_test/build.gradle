@@ -53,13 +53,13 @@ android {
         buildConfigField 'int', 'ROUNDS_SELECTED_TO', '10000' // not equal to
 
         final def orms = [
-                new ORM('raw',              'Sqlite native',    'raw.db',       db_version),
-                new ORM('storm',            'Storm',            'storm.db',     db_version),
-                new ORM('sprinkles',        'Sprinkles',        'sprinkles.db', db_version - 1), // zero based....
+                new ORM('raw',              'Sqlite native',    'raw.db',       db_version,     'raw.RawTest'),
+                new ORM('storm',            'Storm',            'storm.db',     db_version,     'storm.StormTest'),
+                new ORM('sprinkles',        'Sprinkles',        'sprinkles.db', db_version - 1, 'sprkls.SprinklesTest'), // zero based....
 //                new ORM('db_flow',          'DB Flow',          'db_flow.db',   db_version),
-                new ORM('active_android',   'ActiveAndroid',    aa_db,          db_version),
-                new ORM('sugar_orm',        'SugarORM',         sugar_db,       db_version),
-                new ORM('rush_orm',         'RushORM',          rush_db,        db_version),
+                new ORM('active_android',   'ActiveAndroid',    aa_db,          db_version,     'aa.AATest'),
+                new ORM('sugar_orm',        'SugarORM',         sugar_db,       db_version,     'sugar.SugarTest'),
+                new ORM('rush_orm',         'RushORM',          rush_db,        db_version,     'rush.RushTest'),
 //                new ORM('ollie',            'Ollie',            'ollie.db',     db_version),
 //                new ORM('orm_lite',         'ORMLite',          'ormlite.db',   db_version)
         ]
@@ -73,14 +73,16 @@ android {
                 isFirst = false
             }
             final def tN = orm.typeName.toUpperCase()
-            builder.append("$tN(\"$orm.ormName\",\"$orm.dbName\",$orm.dbVersion)")
+            final def cN = "$applicationId.$orm.className"
+            builder.append("$tN(\"$orm.ormName\",\"$orm.dbName\",$orm.dbVersion,\"$cN\")")
         }
-        builder.append(';\nprivate final String ormName;\nprivate final String dbName;\nprivate final int dbVersion;\n')
-                .append('private ORM(String ormName,String dbName,int dbVersion) {\n')
-                .append('this.ormName=ormName;\nthis.dbName=dbName;\nthis.dbVersion=dbVersion;\n}\n')
+        builder.append(';\nprivate final String ormName;\nprivate final String dbName;\nprivate final int dbVersion;\nprivate final String className;\n')
+                .append('private ORM(String ormName,String dbName,int dbVersion, String className) {\n')
+                .append('this.ormName=ormName;\nthis.dbName=dbName;\nthis.dbVersion=dbVersion;\nthis.className=className;\n}\n')
                 .append('public String getOrmName(){return ormName;}\n')
                 .append('public String getDbName(){return dbName;}\n')
                 .append('public int getDbVersion(){return dbVersion;}\n')
+                .append('public String getClassName(){return className;}\n')
                 .append('}')
 
         buildConfigField 'byte', 'dummy', '(byte) 0' + builder.toString()
@@ -110,12 +112,14 @@ public class ORM {
     def ormName
     def dbName
     def dbVersion
+    def className
 
-    public ORM(typeName, ormName, dbName, dbVersion) {
+    public ORM(typeName, ormName, dbName, dbVersion, className) {
         this.typeName = typeName
         this.ormName = ormName
         this.dbName = dbName
         this.dbVersion = dbVersion
+        this.className = className
     }
 }
 
